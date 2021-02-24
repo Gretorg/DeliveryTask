@@ -40,13 +40,13 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jsp-api" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.40" level="project" />
-    <orderEntry type="library" name="servlet-api" level="project" />
-    <orderEntry type="library" name="json-simple-2.1.2" level="project" />
-    <orderEntry type="library" name="jstl-1.2" level="project" />
-    <orderEntry type="library" name="mail" level="project" />
-    <orderEntry type="library" name="activation" level="project" />
+    <orderEntry type="library" exported="" name="jsp-api" level="project" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-5.1.40" level="project" />
+    <orderEntry type="library" exported="" name="servlet-api" level="project" />
+    <orderEntry type="library" exported="" name="json-simple-2.1.2" level="project" />
+    <orderEntry type="library" exported="" name="jstl-1.2" level="project" />
+    <orderEntry type="library" exported="" name="mail" level="project" />
+    <orderEntry type="library" exported="" name="activation" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.11" level="project" />
