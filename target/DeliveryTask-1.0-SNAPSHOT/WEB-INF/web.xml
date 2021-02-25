@@ -178,6 +178,7 @@
         <url-pattern>/updateOrder</url-pattern>
         <url-pattern>/reportsPage.jsp</url-pattern>
         <url-pattern>/userOrders.jsp</url-pattern>
+        <url-pattern>/showUserOrdersPagination</url-pattern>
     </filter-mapping>
 
     <listener>

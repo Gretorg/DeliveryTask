@@ -2,9 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="./header.jsp" %>
 <div class="homePage container-fluid">
-    <div class="col-12 d-flex justify-content-center align-items-center">
-        <h1>HOME PAGE</h1>
-    </div>
     <div class="row">
         <div class="col-4">
             <form action="${pageContext.request.contextPath}/findReport" method="post">
