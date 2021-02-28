@@ -42,6 +42,7 @@ public class ServletLogin extends HttpServlet {
         int role = 0;
         int id = 0;
 
+        //find all by email
         try {
             id = dbManager.findIdByEmail(connection, email);
             logger.info("Find id by email");

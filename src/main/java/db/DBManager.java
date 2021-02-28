@@ -527,7 +527,6 @@ public class DBManager {
      * @return List of delivery entities.
      */
     public List<Delivery> findReports(Connection connection, String date, String city) throws SQLException {
-
         ResultSet rs = null;
         List<Delivery> deliveryList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_REPORTS)) {

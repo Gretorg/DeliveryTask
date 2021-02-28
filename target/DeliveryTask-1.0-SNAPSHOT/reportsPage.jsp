@@ -4,7 +4,7 @@
 <div class="homePage container-fluid">
     <div class="row">
         <div class="col-4">
-            <form action="${pageContext.request.contextPath}/findReport" method="post">
+            <form action="${pageContext.request.contextPath}/showReport" method="post">
                 <div class="mb-3">
                     <label for="select_date" class="form-label">
                         <fmt:message key="body_send_date"/>

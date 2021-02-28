@@ -56,10 +56,6 @@
         <servlet-class>Servlets.admin.ServletShowReport</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FindReport</servlet-name>
-        <servlet-class>Servlets.admin.ServletFindReport</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>SaveReport</servlet-name>
         <servlet-class>Servlets.admin.ServletSaveReport</servlet-class>
     </servlet>
@@ -131,10 +127,6 @@
     <servlet-mapping>
         <servlet-name>ShowReport</servlet-name>
         <url-pattern>/showReport</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FindReport</servlet-name>
-        <url-pattern>/findReport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SaveReport</servlet-name>

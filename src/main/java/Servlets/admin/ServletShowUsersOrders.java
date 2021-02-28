@@ -26,10 +26,6 @@ public class ServletShowUsersOrders extends HttpServlet {
     public static Logger logger = Logger.getLogger("ServletShowUsersOrders");
     private static final DBManager dbManager = DBManager.getInstance();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection connection = dbManager.getConnection();

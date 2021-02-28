@@ -27,10 +27,6 @@ public class ServletArrangeDelivery extends HttpServlet {
     public static Logger logger = Logger.getLogger("ServletArrangeDelivery");
     private final DBManager dbManager = DBManager.getInstance();
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection connection = dbManager.getConnection();
