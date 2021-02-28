@@ -5,7 +5,6 @@ import db.Fields;
 import db.entity.Users;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,6 +31,7 @@ public class ServletLogin extends HttpServlet {
     public static Logger logger = Logger.getLogger("ServletLogin");
     private static final DBManager dbManager = DBManager.getInstance();
     private static final String SHA= "SHA-256";
+
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -95,9 +94,8 @@ public class ServletLogin extends HttpServlet {
         try {
             Users users1 = new Users(email,hash(concat));
             List<Users> users = dbManager.findUsersInfo(connection);
-            Iterator<Users> iterator = users.iterator();
-            while (iterator.hasNext()){
-                if(iterator.next().equals(users1)){
+            for (Users user : users) {
+                if (user.equals(users1)) {
                     check = true;
                     break;
                 }

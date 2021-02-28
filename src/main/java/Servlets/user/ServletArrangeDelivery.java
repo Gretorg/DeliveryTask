@@ -28,7 +28,6 @@ public class ServletArrangeDelivery extends HttpServlet {
     private final DBManager dbManager = DBManager.getInstance();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         doGet(request, response);
     }
 

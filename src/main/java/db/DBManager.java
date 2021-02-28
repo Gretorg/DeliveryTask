@@ -1,14 +1,12 @@
 package db;
 
-import Listeners.ListenerLogger;
+
 import db.entity.Cargo;
 import db.entity.Routes;
 import db.entity.Delivery;
 import db.entity.Users;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +86,16 @@ public class DBManager {
             "inner join status\n" +
             "on delivery.status_id = status.status_id\n" +
             "where delivery.status_id = 3;";
+
+    private static final String ORDER_BY_PAGINATION = "select delivery.*, routes.*, status.delivery_status\n" +
+            "from delivery\n" +
+            "inner join routes\n" +
+            "on delivery.route_id = routes.route_id\n" +
+            "inner join status\n" +
+            "on delivery.status_id = status.status_id\n" +
+            "where delivery.status_id = 3\n" +
+            "order by routes.city_from\n" +
+            "limit ?, 5;";
 
     private static DBManager dbManager;
 
@@ -609,5 +617,36 @@ public class DBManager {
             rs.close();
         }
         return count;
+    }
+
+    public List<Delivery> findUsersOrderBy(Connection connection, int start) throws SQLException {
+
+        ResultSet rs = null;
+        List<Delivery> deliveryList = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ORDER_BY_PAGINATION)) {
+            preparedStatement.setInt(1, start);
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+
+                int delivery_id = rs.getInt(Fields.DELIVERY_ID);
+                String address = rs.getString(Fields.ADDRESS);
+                String name = rs.getString(Fields.RECEIVER_NAME);
+                String lastName = rs.getString(Fields.RECEIVER_LAST_NAME);
+                String sendDate = rs.getString(Fields.SEND_DATE);
+                String deliveryDate = rs.getString(Fields.DELIVERY_DATE);
+                int price = rs.getInt(Fields.PRICE);
+                String cityFrom = rs.getString(Fields.CITY_FROM);
+                String cityTo = rs.getString(Fields.CITY_TO);
+                String status = rs.getString("delivery_status");
+                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+            }
+        } catch (SQLException e) {
+            logger.info(e.getMessage());
+        }finally {
+            assert rs != null;
+            rs.close();
+        }
+        return deliveryList;
     }
 }

@@ -7,7 +7,11 @@
             <table class="table table-primary">
                 <thead>
                 <tr>
-                    <th scope="col"><fmt:message key="body_city_from"/></th>
+                    <th scope="col">
+                        <a href="${pageContext.request.contextPath}/showPaginationOrderBy?page=1">
+                            <fmt:message key="body_city_from"/>
+                        </a>
+                    </th>
                     <th scope="col"><fmt:message key="body_city_to"/></th>
                     <th scope="col"><fmt:message key="body_address"/></th>
                     <th scope="col"><fmt:message key="body_receiver_name"/></th>
@@ -49,8 +53,16 @@
                 <ul class="pagination">
                     <c:forEach var = "i" begin = "1" end = "${requestScope['countPages']}">
                         <li class="page-item">
-                            <a class="page-link"
-                               href='${pageContext.request.contextPath}/showUserOrdersPagination?page=${i}'>${i}</a>
+                            <c:if test="${requestScope['orderBy'] == 1}">
+                                <a class="page-link"
+                                   href='${pageContext.request.contextPath}/showPaginationOrderBy?page=${i}'>${i}
+                                </a>
+                            </c:if>
+                            <c:if test="${requestScope['orderBy'] == null}">
+                                <a class="page-link"
+                                   href='${pageContext.request.contextPath}/showUserOrdersPagination?page=${i}'>${i}
+                                </a>
+                            </c:if>
                         </li>
                     </c:forEach>
                 </ul>

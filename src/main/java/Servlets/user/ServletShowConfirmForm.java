@@ -30,6 +30,7 @@ public class ServletShowConfirmForm extends HttpServlet {
     private static final String SCR_PAGE = "ISO-8859-1";
     private static final String DST_PAGE = "UTF-8" ;
 
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection connection = dbManager.getConnection();
