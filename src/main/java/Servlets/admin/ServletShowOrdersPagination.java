@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Show users orders with pagination
  *
- * @author  Vlad Salimovskyi
+ * @author Vlad Salimovskyi
  */
 @WebServlet(name = "/showUserOrdersPagination")
 public class ServletShowOrdersPagination extends HttpServlet {
@@ -30,7 +30,7 @@ public class ServletShowOrdersPagination extends HttpServlet {
 
         Connection connection = dbManager.getConnection();
         List<Delivery> deliveryList = null;
-
+        String order = request.getParameter("order");
         int pageId = Integer.parseInt(request.getParameter("page"));
 
         int countPages;
@@ -56,20 +56,31 @@ public class ServletShowOrdersPagination extends HttpServlet {
 
         countPages = countRows / total + 1;
 
-        if(pageId != 1){
-            start = total * (pageId -1);
+        if (pageId != 1) {
+            start = total * (pageId - 1);
         }
 
-        try {
-            deliveryList = dbManager.findUsersOrdersPagination(connection, start);
-            logger.info("Find users orders with pagination");
-        } catch (SQLException e) {
-            logger.debug(e.getMessage());
+        if (order != null) {
+            try {
+                deliveryList = dbManager.findUsersOrderBy(connection, start, order);
+                logger.info("Find users orders with pagination order by "+order);
+            } catch (SQLException e) {
+                logger.debug(e.getMessage());
+            }
+        }
+        else{
+            try {
+                deliveryList = dbManager.findUsersOrdersPagination(connection, start);
+                logger.info("Find users orders with pagination");
+            } catch (SQLException e) {
+                logger.debug(e.getMessage());
+            }
         }
 
+        request.setAttribute("order", order);
         request.setAttribute("countPages", countPages);
-        request.setAttribute("status",status);
-        request.setAttribute("deliveryList",deliveryList);
+        request.setAttribute("status", status);
+        request.setAttribute("deliveryList", deliveryList);
         getServletContext().getRequestDispatcher("/userOrders.jsp").forward(request, response);
     }
 }

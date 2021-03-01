@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * DB manager. Works with mysql DB. Required DAO methods are defined only.
  *
- * @author  Vlad Salimovskyi
+ * @author Vlad Salimovskyi
  */
 public class DBManager {
 
@@ -36,7 +36,7 @@ public class DBManager {
     private static final String SELECT_USER_ID_BY_EMAIL = "select users.user_id from users where users.user_email=?;";
     private static final String SELECT_SALT_BY_EMAIL = "select users.user_salt from users where users.user_email=?;";
     private static final String SELECT_EMAIL_PASS = "select users.user_email, users.user_password from users;";
-    private static final String SELECT_EMAIL_FROM_USERS="select users.user_email from users;";
+    private static final String SELECT_EMAIL_FROM_USERS = "select users.user_email from users;";
     private static final String SELECT_ALL_FROM_ROUTE = "select * from routes order by city_from;";
     private static final String SELECT_DELIVERY_BY_USER_ID = "select delivery.*, routes.*, status.delivery_status\n" +
             "from delivery\n" +
@@ -87,23 +87,14 @@ public class DBManager {
             "on delivery.status_id = status.status_id\n" +
             "where delivery.status_id = 3;";
 
-    private static final String ORDER_BY_PAGINATION = "select delivery.*, routes.*, status.delivery_status\n" +
-            "from delivery\n" +
-            "inner join routes\n" +
-            "on delivery.route_id = routes.route_id\n" +
-            "inner join status\n" +
-            "on delivery.status_id = status.status_id\n" +
-            "where delivery.status_id = 3\n" +
-            "order by routes.city_from\n" +
-            "limit ?, 5;";
-
     private static DBManager dbManager;
 
-    private DBManager(){}
+    private DBManager() {
+    }
 
-    public static DBManager getInstance(){
+    public static DBManager getInstance() {
 
-        if(dbManager==null){
+        if (dbManager == null) {
             dbManager = new DBManager();
         }
         return dbManager;
@@ -114,7 +105,7 @@ public class DBManager {
      *
      * @return DB connection.
      */
-    public Connection getConnection(){
+    public Connection getConnection() {
 
         Connection connection = null;
         try {
@@ -129,7 +120,7 @@ public class DBManager {
     /**
      * Insert a new user to DB.
      */
-    public boolean insertUser(Connection connection, Users user){
+    public boolean insertUser(Connection connection, Users user) {
 
         boolean insert = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_USER)) {
@@ -152,10 +143,10 @@ public class DBManager {
      *
      * @return cargoId
      */
-    public int insertCargo(Connection connection, Cargo cargo){
+    public int insertCargo(Connection connection, Cargo cargo) {
 
         int createdId = 0;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_CARGO,Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_CARGO, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, cargo.getWeight());
             preparedStatement.setInt(2, cargo.getLength());
             preparedStatement.setInt(3, cargo.getWidth());
@@ -163,12 +154,12 @@ public class DBManager {
             preparedStatement.setString(5, cargo.getDescription());
             int affectedRows = preparedStatement.executeUpdate();
 
-            if(affectedRows == 0){
+            if (affectedRows == 0) {
                 throw new SQLException("Failed");
             }
 
-            try(ResultSet rs = preparedStatement.getGeneratedKeys()) {
-                if(rs.next()){
+            try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
+                if (rs.next()) {
                     createdId = rs.getInt(1);
                 }
             }
@@ -182,7 +173,7 @@ public class DBManager {
     /**
      * Insert a new delivery to DB.
      */
-    public boolean insertDelivery(Connection connection, Delivery delivery){
+    public boolean insertDelivery(Connection connection, Delivery delivery) {
 
         boolean insert = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_DELIVERY)) {
@@ -216,12 +207,12 @@ public class DBManager {
             while (rs.next()) {
                 String email = rs.getString(Fields.USER_EMAIL);
                 String password = rs.getString(Fields.USER_PASSWORD);
-                user.add(new Users(email,password));
+                user.add(new Users(email, password));
             }
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -246,7 +237,7 @@ public class DBManager {
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -263,7 +254,7 @@ public class DBManager {
         String salt = null;
         ResultSet rs = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SALT_BY_EMAIL)) {
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1, email);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 salt = rs.getString(Fields.USER_SALT);
@@ -271,7 +262,7 @@ public class DBManager {
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -288,7 +279,7 @@ public class DBManager {
         int id = 0;
         ResultSet rs = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_ID_BY_EMAIL)) {
-            preparedStatement.setString(1,email);
+            preparedStatement.setString(1, email);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 id = Integer.parseInt(rs.getString(Fields.USER_ID));
@@ -296,7 +287,7 @@ public class DBManager {
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -308,13 +299,13 @@ public class DBManager {
      *
      * @return User`s role
      */
-    public int findRoleByEmail(Connection connection, String email,String password) throws SQLException {
+    public int findRoleByEmail(Connection connection, String email, String password) throws SQLException {
 
         int role = 0;
         ResultSet rs = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_EMAIL_PASS)) {
-            preparedStatement.setString(1,email);
-            preparedStatement.setString(2,password);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
 
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -323,7 +314,7 @@ public class DBManager {
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -340,7 +331,7 @@ public class DBManager {
         int distance = 0;
         ResultSet rs = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_DISTANCE_BY_ID)) {
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 distance = Integer.parseInt(rs.getString(Fields.DISTANCE));
@@ -348,7 +339,7 @@ public class DBManager {
 
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -372,11 +363,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 int distance = rs.getInt(Fields.DISTANCE);
-                routes.add(new Routes(id,cityFrom,cityTo,distance));
+                routes.add(new Routes(id, cityFrom, cityTo, distance));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -393,8 +384,8 @@ public class DBManager {
         ResultSet rs = null;
         List<Delivery> deliveryList = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_DELIVERY_BY_USER_ID)) {
-            preparedStatement.setInt(1,userId);
-            preparedStatement.setInt(2,statusDelivery);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, statusDelivery);
             rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
@@ -409,11 +400,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -445,11 +436,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -459,8 +450,7 @@ public class DBManager {
     /**
      * Update user`s order.
      *
-     * @param statusId,deliveryId
-     *            user`s order to update.
+     * @param statusId,deliveryId user`s order to update.
      */
     public void updateOrderBy(Connection connection, int statusId, int deliveryId) throws SQLException {
 
@@ -489,7 +479,7 @@ public class DBManager {
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -514,7 +504,7 @@ public class DBManager {
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -547,11 +537,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -583,11 +573,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
@@ -611,18 +601,32 @@ public class DBManager {
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }
         return count;
     }
 
-    public List<Delivery> findUsersOrderBy(Connection connection, int start) throws SQLException {
+    /**
+     * Returns reports by pagination and sorting.
+     *
+     * @return List of delivery entities.
+     */
+    public List<Delivery> findUsersOrderBy(Connection connection, int start, String orderBy) throws SQLException {
 
+        System.out.println(orderBy);
         ResultSet rs = null;
         List<Delivery> deliveryList = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(ORDER_BY_PAGINATION)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select delivery.*, routes.*, status.delivery_status\n" +
+                "from delivery\n" +
+                "inner join routes\n" +
+                "on delivery.route_id = routes.route_id\n" +
+                "inner join status\n" +
+                "on delivery.status_id = status.status_id\n" +
+                "where delivery.status_id = 3\n" +
+                "order by routes.city_from "+orderBy+"\n" +
+                "limit ?, 5;")) {
             preparedStatement.setInt(1, start);
             rs = preparedStatement.executeQuery();
 
@@ -638,11 +642,11 @@ public class DBManager {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id,address,name,lastName,sendDate,deliveryDate,price,cityFrom,cityTo,status));
+                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-        }finally {
+        } finally {
             assert rs != null;
             rs.close();
         }

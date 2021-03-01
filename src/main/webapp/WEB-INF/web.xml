@@ -67,15 +67,7 @@
         <servlet-name>ShowUsersOrdersPagination</servlet-name>
         <servlet-class>Servlets.admin.ServletShowOrdersPagination</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ServletPaginationOrderBy</servlet-name>
-        <servlet-class>Servlets.admin.ServletPaginationOrderBy</servlet-class>
-    </servlet>
 
-    <servlet-mapping>
-        <servlet-name>ServletPaginationOrderBy</servlet-name>
-        <url-pattern>/showPaginationOrderBy</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletNewUser</servlet-name>
         <url-pattern>/newUser</url-pattern>

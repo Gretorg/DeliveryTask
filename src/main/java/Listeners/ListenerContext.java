@@ -27,7 +27,6 @@ public class ListenerContext implements ServletContextListener,
     public static Logger logger = Logger.getLogger(ListenerContext.class);
     private final DBManager dbManager = DBManager.getInstance();
 
-
     public void contextInitialized(ServletContextEvent event) {
 
         Connection connection = dbManager.getConnection();

@@ -8,9 +8,25 @@
                 <thead>
                 <tr>
                     <th scope="col">
-                        <a href="${pageContext.request.contextPath}/showPaginationOrderBy?page=1">
-                            <fmt:message key="body_city_from"/>
-                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <fmt:message key="body_city_from"/>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="${pageContext.request.contextPath}/showUserOrdersPagination?page=1&order=asc">
+                                        Order by asc
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/showUserOrdersPagination?page=1&order=desc">
+                                        Order by desk
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </th>
                     <th scope="col"><fmt:message key="body_city_to"/></th>
                     <th scope="col"><fmt:message key="body_address"/></th>
@@ -53,16 +69,9 @@
                 <ul class="pagination">
                     <c:forEach var = "i" begin = "1" end = "${requestScope['countPages']}">
                         <li class="page-item">
-                            <c:if test="${requestScope['orderBy'] == 1}">
-                                <a class="page-link"
-                                   href='${pageContext.request.contextPath}/showPaginationOrderBy?page=${i}'>${i}
-                                </a>
-                            </c:if>
-                            <c:if test="${requestScope['orderBy'] == null}">
-                                <a class="page-link"
-                                   href='${pageContext.request.contextPath}/showUserOrdersPagination?page=${i}'>${i}
-                                </a>
-                            </c:if>
+                            <a class="page-link"
+                               href="${pageContext.request.contextPath}/showUserOrdersPagination?page=${i}&order=<c:out value="${requestScope['order']}"/>">${i}
+                            </a>
                         </li>
                     </c:forEach>
                 </ul>
