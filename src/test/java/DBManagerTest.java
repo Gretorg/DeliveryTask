@@ -1,5 +1,6 @@
 import db.DBManager;
 import db.entity.Cargo;
+import db.entity.ConnectionDB;
 import db.entity.Delivery;
 import db.entity.Users;
 import org.apache.log4j.Logger;
@@ -10,7 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBManagerTest {
+public class DBManagerTest implements ConnectionDB {
 
     private static final String URL = "jdbc:mysql://localhost/deliveryTest?serverTimezone=UTC";
     private static final String USERNAME = "root";
@@ -18,6 +19,7 @@ public class DBManagerTest {
     private static final DBManager dbManager = DBManager.getInstance();
     public static Logger logger = Logger.getLogger("DBManagerTest");
 
+    @Override
     public Connection getConnection(){
 
         Connection connection = null;

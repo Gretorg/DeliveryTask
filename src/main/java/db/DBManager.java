@@ -1,10 +1,7 @@
 package db;
 
 
-import db.entity.Cargo;
-import db.entity.Routes;
-import db.entity.Delivery;
-import db.entity.Users;
+import db.entity.*;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -16,7 +13,7 @@ import java.util.List;
  *
  * @author Vlad Salimovskyi
  */
-public class DBManager {
+public class DBManager implements ConnectionDB {
 
 
     public static Logger logger = Logger.getLogger("DBManager");
@@ -105,6 +102,7 @@ public class DBManager {
      *
      * @return DB connection.
      */
+    @Override
     public Connection getConnection() {
 
         Connection connection = null;
