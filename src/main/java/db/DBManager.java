@@ -2,6 +2,7 @@ package db;
 
 
 import db.entity.*;
+import db.entity.Users;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
