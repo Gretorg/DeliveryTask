@@ -2,7 +2,10 @@ package Servlets.login;
 
 import db.DBManager;
 import db.Fields;
-import db.entity.Users;
+import db.entity.users.UserBuilder;
+import db.entity.users.Users;
+import db.entity.users.UsersCommonInfo;
+import db.entity.users.UsersSecretInfo;
 import org.apache.log4j.Logger;
 
 import javax.mail.*;
@@ -57,7 +60,18 @@ public class ServletNewUser extends HttpServlet {
 
         if(checkEmail(email)){
             try {
-                dbManager.insertUser(connection,new Users(email,hash(concat),salt,firstName,lastName,birthDate,userRole));
+                /*
+                * //Enter to the user email and password only
+                    UserBuilder userBuilder1 = new UserBuilder();
+                    userBuilder1.setEmailPass(new UserEmailPass("email","password"));
+                    userBuilder1.setUserInfo(new UserInfo("firstName","lastName"));
+                    User user1 = userBuilder1.getResult();
+                */
+                UserBuilder userBuilder = new UserBuilder();
+                userBuilder.setUsersSecretInfo(new UsersSecretInfo(email,hash(concat)));
+                userBuilder.setUsersCommonInfo(new UsersCommonInfo(salt,firstName,lastName,birthDate,userRole));
+                Users user = userBuilder.getResult();
+                dbManager.insertUser(connection,user);
                 logger.info("Insert new user");
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

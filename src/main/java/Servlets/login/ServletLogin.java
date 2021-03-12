@@ -2,7 +2,9 @@ package Servlets.login;
 
 import db.DBManager;
 import db.Fields;
-import db.entity.Users;
+import db.entity.users.UserBuilder;
+import db.entity.users.Users;
+import db.entity.users.UsersSecretInfo;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -91,17 +93,24 @@ public class ServletLogin extends HttpServlet {
     public static boolean checkUser(String email, String concat){
 
         Connection connection = dbManager.getConnection();
+        UserBuilder userBuilder = new UserBuilder();
+        try {
+            userBuilder.setUsersSecretInfo(new UsersSecretInfo(email,hash(concat)));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        Users newUser = userBuilder.getResult();
         boolean check = false;
         try {
-            Users users1 = new Users(email,hash(concat));
+
             List<Users> users = dbManager.findUsersInfo(connection);
             for (Users user : users) {
-                if (user.equals(users1)) {
+                if (user.getUsersSecretInfo().equals(newUser.getUsersSecretInfo())) {
                     check = true;
                     break;
                 }
             }
-        } catch (SQLException | NoSuchAlgorithmException throwable) {
+        } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
         return check;

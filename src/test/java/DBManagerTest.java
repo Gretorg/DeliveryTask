@@ -2,7 +2,7 @@ import db.DBManager;
 import db.entity.Cargo;
 import db.entity.ConnectionDB;
 import db.entity.Delivery;
-import db.entity.Users;
+import db.entity.users.Users;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,15 +30,6 @@ public class DBManagerTest implements ConnectionDB {
             logger.info(e.getMessage());
         }
         return connection;
-    }
-
-    @Test
-    public void insertUser(){
-
-        Connection connection = getConnection();
-        boolean actual = dbManager.insertUser(connection,new Users("email@gmail.com","123",
-                "asdsad", "Ivan","Ivanov","2000-10-10",2));
-        Assert.assertTrue(actual);
     }
 
     @Test

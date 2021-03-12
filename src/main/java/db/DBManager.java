@@ -2,7 +2,9 @@ package db;
 
 
 import db.entity.*;
-import db.entity.Users;
+import db.entity.users.UserBuilder;
+import db.entity.users.Users;
+import db.entity.users.UsersSecretInfo;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -123,13 +125,13 @@ public class DBManager implements ConnectionDB {
 
         boolean insert = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_USER)) {
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getSalt());
-            preparedStatement.setString(4, user.getFirstName());
-            preparedStatement.setString(5, user.getLastName());
-            preparedStatement.setString(6, user.getBirthDate());
-            preparedStatement.setInt(7, user.getRoleId());
+            preparedStatement.setString(1, user.getUsersSecretInfo().getEmail());
+            preparedStatement.setString(2, user.getUsersSecretInfo().getPassword());
+            preparedStatement.setString(3, user.getUsersCommonInfo().getSalt());
+            preparedStatement.setString(4, user.getUsersCommonInfo().getFirstName());
+            preparedStatement.setString(5, user.getUsersCommonInfo().getLastName());
+            preparedStatement.setString(6, user.getUsersCommonInfo().getBirthDate());
+            preparedStatement.setInt(7, user.getUsersCommonInfo().getRoleId());
             insert = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -201,12 +203,15 @@ public class DBManager implements ConnectionDB {
 
         ResultSet rs = null;
         List<Users> user = new ArrayList<>();
+        UserBuilder userBuilder = new UserBuilder();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMAIL_PASS)) {
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String email = rs.getString(Fields.USER_EMAIL);
                 String password = rs.getString(Fields.USER_PASSWORD);
-                user.add(new Users(email, password));
+                userBuilder.setUsersSecretInfo(new UsersSecretInfo(email,password));
+                Users newUser = userBuilder.getResult();
+                user.add(newUser);
             }
 
         } catch (SQLException e) {
