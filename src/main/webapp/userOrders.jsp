@@ -41,18 +41,18 @@
                 <tbody>
                     <c:forEach var="deliveryList" items="${deliveryList}">
                         <tr>
-                            <td> <c:out value='${deliveryList.getCityFrom()}'/></td>
-                            <td> <c:out value='${deliveryList.getCityTo()}'/></td>
-                            <td> <c:out value='${deliveryList.getAddress()}'/></td>
-                            <td> <c:out value='${deliveryList.getReceiverName()}'/></td>
-                            <td> <c:out value='${deliveryList.getReceiverSurname()}'/></td>
-                            <td> <c:out value='${deliveryList.getSendDate()}'/></td>
-                            <td> <c:out value='${deliveryList.getDeliveryDate()}'/></td>
-                            <td> <c:out value='${deliveryList.getPrice()}'/></td>
-                            <td> <c:out value='${deliveryList.getStatus()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getCityFrom()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getCityTo()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getAddress()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getReceiverName()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getReceiverSurname()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getSendDate()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getDeliveryDate()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getPrice()}'/></td>
+                            <td> <c:out value='${deliveryList.getDeliverySelect().getStatus()}'/></td>
                             <c:if test="${requestScope['status']== 1}">
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/updateOrder?id=<c:out value='${deliveryList.getDeliveryId()}' />"
+                                    <a href="${pageContext.request.contextPath}/updateOrder?id=<c:out value='${deliveryList.getDeliverySelect().getDeliveryId()}' />"
                                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
                                         <fmt:message key="button_accept"/>
                                     </a>

@@ -2,6 +2,9 @@ package db;
 
 
 import db.entity.*;
+import db.entity.delivery.Delivery;
+import db.entity.delivery.DeliveryBuilder;
+import db.entity.delivery.DeliverySelect;
 import db.entity.users.UserBuilder;
 import db.entity.users.Users;
 import db.entity.users.UsersSecretInfo;
@@ -178,15 +181,15 @@ public class DBManager implements ConnectionDB {
 
         boolean insert = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW_DELIVERY)) {
-            preparedStatement.setInt(1, delivery.getCargoId());
-            preparedStatement.setInt(2, delivery.getRouteId());
-            preparedStatement.setInt(3, delivery.getUserId());
-            preparedStatement.setString(4, delivery.getReceiverName());
-            preparedStatement.setString(5, delivery.getReceiverSurname());
-            preparedStatement.setString(6, delivery.getAddress());
-            preparedStatement.setString(7, delivery.getSendDate());
-            preparedStatement.setString(8, delivery.getDeliveryDate());
-            preparedStatement.setInt(9, delivery.getPrice());
+            preparedStatement.setInt(1, delivery.getDeliveryInsert().getCargoId());
+            preparedStatement.setInt(2, delivery.getDeliveryInsert().getRouteId());
+            preparedStatement.setInt(3, delivery.getDeliveryInsert().getUserId());
+            preparedStatement.setString(4, delivery.getDeliveryInsert().getReceiverName());
+            preparedStatement.setString(5, delivery.getDeliveryInsert().getReceiverSurname());
+            preparedStatement.setString(6, delivery.getDeliveryInsert().getAddress());
+            preparedStatement.setString(7, delivery.getDeliveryInsert().getSendDate());
+            preparedStatement.setString(8, delivery.getDeliveryInsert().getDeliveryDate());
+            preparedStatement.setInt(9, delivery.getDeliveryInsert().getPrice());
             insert = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -382,6 +385,14 @@ public class DBManager implements ConnectionDB {
      * Returns delivery by user id and status of delivery.
      *
      * @return List of delivery entities.
+     *
+     * //Enter to the user email and password only
+     *         UserBuilder userBuilder1 = new UserBuilder();
+     *         userBuilder1.setEmailPass(new UserEmailPass("email","password"));
+     *         userBuilder1.setUserInfo(new UserInfo("firstName","lastName"));
+     *         User user1 = userBuilder1.getResult();
+     *         System.out.println(user1.getUserEmailPass());
+     *         System.out.println(user1.getUserEmailPass().equals(user.getUserEmailPass()));
      */
     public List<Delivery> findDeliveryById(Connection connection, int userId, int statusDelivery) throws SQLException {
 
@@ -404,7 +415,10 @@ public class DBManager implements ConnectionDB {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+                deliveryBuilder.setDeliverySelect(new DeliverySelect(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                Delivery delivery = deliveryBuilder.getResult();
+                deliveryList.add(delivery);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -440,7 +454,10 @@ public class DBManager implements ConnectionDB {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+                deliveryBuilder.setDeliverySelect(new DeliverySelect(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                Delivery delivery = deliveryBuilder.getResult();
+                deliveryList.add(delivery);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -541,7 +558,10 @@ public class DBManager implements ConnectionDB {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+                deliveryBuilder.setDeliverySelect(new DeliverySelect(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                Delivery delivery = deliveryBuilder.getResult();
+                deliveryList.add(delivery);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -577,7 +597,10 @@ public class DBManager implements ConnectionDB {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+                deliveryBuilder.setDeliverySelect(new DeliverySelect(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                Delivery delivery = deliveryBuilder.getResult();
+                deliveryList.add(delivery);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
@@ -646,7 +669,10 @@ public class DBManager implements ConnectionDB {
                 String cityFrom = rs.getString(Fields.CITY_FROM);
                 String cityTo = rs.getString(Fields.CITY_TO);
                 String status = rs.getString("delivery_status");
-                deliveryList.add(new Delivery(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+                deliveryBuilder.setDeliverySelect(new DeliverySelect(delivery_id, address, name, lastName, sendDate, deliveryDate, price, cityFrom, cityTo, status));
+                Delivery delivery = deliveryBuilder.getResult();
+                deliveryList.add(delivery);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());

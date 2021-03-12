@@ -1,8 +1,7 @@
 import db.DBManager;
 import db.entity.Cargo;
 import db.entity.ConnectionDB;
-import db.entity.Delivery;
-import db.entity.users.Users;
+import db.entity.delivery.Delivery;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,18 +31,6 @@ public class DBManagerTest implements ConnectionDB {
         return connection;
     }
 
-    @Test
-    public void insertCargoAndDelivery(){
-
-        Connection connection = getConnection();
-        Cargo cargo = new Cargo(2,20,20,20,"Сейф");
-        dbManager.insertCargo(connection, cargo);
-        cargo.setId(dbManager.insertCargo(connection, cargo));
-        boolean actual = dbManager.insertDelivery(connection,new Delivery(1, cargo.getId(), 1,
-                "Ivanov", "Ivanov","Street",
-                "2021-02-24","2021-02-26",200));
-        Assert.assertTrue(actual);
-    }
 
     @Test
     public void findSaltByEmailTest() throws SQLException {

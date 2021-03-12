@@ -3,7 +3,9 @@ package Servlets.user;
 import db.DBManager;
 import db.Fields;
 import db.entity.Cargo;
-import db.entity.Delivery;
+import db.entity.delivery.Delivery;
+import db.entity.delivery.DeliveryBuilder;
+import db.entity.delivery.DeliveryInsert;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -11,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -51,7 +52,9 @@ public class ServletConfirmDelivery extends HttpServlet {
         cargo.setId(dbManager.insertCargo(connection,cargo));
         logger.info("Insert new cargo");
 
-        Delivery delivery = new Delivery(routeId, cargo.getId(),userId ,firstName, lastName, address, sendDate, deliveryDate, price);
+        DeliveryBuilder deliveryBuilder = new DeliveryBuilder();
+        deliveryBuilder.setDeliveryInsert(new DeliveryInsert(routeId, cargo.getId(),userId ,firstName, lastName, address, sendDate, deliveryDate, price));
+        Delivery delivery = deliveryBuilder.getResult();
         dbManager.insertDelivery(connection,delivery);
         logger.info("Insert new user order");
 

@@ -1,7 +1,7 @@
 package Servlets.admin;
 
 import db.DBManager;
-import db.entity.Delivery;
+import db.entity.delivery.Delivery;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;

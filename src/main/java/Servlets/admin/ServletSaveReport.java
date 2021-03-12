@@ -1,7 +1,7 @@
 package Servlets.admin;
 
 import db.DBManager;
-import db.entity.Delivery;
+import db.entity.delivery.Delivery;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -106,15 +106,15 @@ public class ServletSaveReport extends HttpServlet {
     private static void createSheetHeader(HSSFSheet sheet, int rowNum, Delivery dataModel) {
 
         Row row = sheet.createRow(rowNum);
-        row.createCell(0).setCellValue(dataModel.getReceiverName());
-        row.createCell(1).setCellValue(dataModel.getReceiverSurname());
-        row.createCell(2).setCellValue(dataModel.getAddress());
-        row.createCell(3).setCellValue(dataModel.getSendDate());
-        row.createCell(4).setCellValue(dataModel.getDeliveryDate());
-        row.createCell(5).setCellValue(dataModel.getPrice());
-        row.createCell(6).setCellValue(dataModel.getCityFrom());
-        row.createCell(7).setCellValue(dataModel.getCityTo());
-        row.createCell(8).setCellValue(dataModel.getStatus());
+        row.createCell(0).setCellValue(dataModel.getDeliverySelect().getReceiverName());
+        row.createCell(1).setCellValue(dataModel.getDeliverySelect().getReceiverSurname());
+        row.createCell(2).setCellValue(dataModel.getDeliverySelect().getAddress());
+        row.createCell(3).setCellValue(dataModel.getDeliverySelect().getSendDate());
+        row.createCell(4).setCellValue(dataModel.getDeliverySelect().getDeliveryDate());
+        row.createCell(5).setCellValue(dataModel.getDeliverySelect().getPrice());
+        row.createCell(6).setCellValue(dataModel.getDeliverySelect().getCityFrom());
+        row.createCell(7).setCellValue(dataModel.getDeliverySelect().getCityTo());
+        row.createCell(8).setCellValue(dataModel.getDeliverySelect().getStatus());
     }
 
     /**

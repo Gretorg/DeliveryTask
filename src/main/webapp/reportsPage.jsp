@@ -57,19 +57,19 @@
                                 <tr>
                                     <td>
                                         <input type="hidden" name="cityFrom"
-                                               value="<c:out value='${deliveryList.getCityFrom()}'/>">
+                                               value="<c:out value='${deliveryList.getDeliverySelect().getCityFrom()}'/>">
                                         <input type="hidden" name="dateSend"
-                                               value="<c:out value='${deliveryList.getSendDate()}'/>">
-                                        <c:out value='${deliveryList.getCityFrom()}'/>
+                                               value="<c:out value='${deliveryList.getDeliverySelect().getSendDate()}'/>">
+                                        <c:out value='${deliveryList.getDeliverySelect().getCityFrom()}'/>
                                     </td>
-                                    <td><c:out value='${deliveryList.getCityTo()}'/></td>
-                                    <td><c:out value='${deliveryList.getAddress()}'/></td>
-                                    <td><c:out value='${deliveryList.getReceiverName()}'/></td>
-                                    <td><c:out value='${deliveryList.getReceiverSurname()}'/></td>
-                                    <td><c:out value='${deliveryList.getSendDate()}'/></td>
-                                    <td><c:out value='${deliveryList.getDeliveryDate()}'/></td>
-                                    <td><c:out value='${deliveryList.getPrice()}'/></td>
-                                    <td><c:out value='${deliveryList.getStatus()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getCityTo()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getAddress()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getReceiverName()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getReceiverSurname()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getSendDate()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getDeliveryDate()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getPrice()}'/></td>
+                                    <td><c:out value='${deliveryList.getDeliverySelect().getStatus()}'/></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
