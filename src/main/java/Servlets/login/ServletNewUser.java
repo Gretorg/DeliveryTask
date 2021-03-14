@@ -53,20 +53,10 @@ public class ServletNewUser extends HttpServlet {
         String lastName = encode(request.getParameter(Fields.LAST_NAME),SCR_PAGE,DST_PAGE);
         String birthDate = request.getParameter(Fields.BIRTH_DATE);
         int userRole = 2;
-        int id = 0;
-        int role = 0;
         String concat = password + salt;
-
 
         if(checkEmail(email)){
             try {
-                /*
-                * //Enter to the user email and password only
-                    UserBuilder userBuilder1 = new UserBuilder();
-                    userBuilder1.setEmailPass(new UserEmailPass("email","password"));
-                    userBuilder1.setUserInfo(new UserInfo("firstName","lastName"));
-                    User user1 = userBuilder1.getResult();
-                */
                 UserBuilder userBuilder = new UserBuilder();
                 userBuilder.setUsersSecretInfo(new UsersSecretInfo(email,hash(concat)));
                 userBuilder.setUsersCommonInfo(new UsersCommonInfo(salt,firstName,lastName,birthDate,userRole));
@@ -77,24 +67,18 @@ public class ServletNewUser extends HttpServlet {
                 e.printStackTrace();
             }
 
+            Users thisUser = null;
             try {
-                id = dbManager.findIdByEmail(connection, email);
-                logger.info("Find user id by email");
-            } catch (SQLException e) {
-            logger.debug(e.getMessage());
-        }
-
-            try {
-                role = dbManager.findRoleByEmail(connection, email,hash(concat));
-                logger.info("Find user role by email");
+                thisUser = dbManager.findAllFromUsers(connection,email,hash(concat));
             } catch (SQLException | NoSuchAlgorithmException throwable) {
                 throwable.printStackTrace();
             }
 
             HttpSession session = request.getSession();
-            session.setAttribute("role",role);
+            assert thisUser != null;
+            session.setAttribute("role",thisUser.getUsersCommonInfo().getRoleId());
             session.setAttribute("email",email);
-            session.setAttribute("id",id);
+            session.setAttribute("id",thisUser.getId());
             send(email,"Your password", password);
 
             getServletContext().getRequestDispatcher("/home").forward(request, response);

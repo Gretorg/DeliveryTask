@@ -7,6 +7,7 @@ import db.entity.delivery.DeliveryBuilder;
 import db.entity.delivery.DeliverySelect;
 import db.entity.users.UserBuilder;
 import db.entity.users.Users;
+import db.entity.users.UsersCommonInfo;
 import db.entity.users.UsersSecretInfo;
 import org.apache.log4j.Logger;
 
@@ -32,11 +33,9 @@ public class DBManager implements ConnectionDB {
     private static final String INSERT_NEW_CARGO = "insert into cargo values(null,?,?,?,?,?);";
     private static final String INSERT_NEW_DELIVERY = "insert into delivery values(null,?,?,?,?,?,?,?,?,?,1);";
 
+    private static final String SELECT_ALL_FROM_USERS_BY_EMAIL = "select * from users where user_email = ?" +
+            "and user_password=?;";
     private static final String SELECT_DISTANCE_BY_ID = "select route_distance from routes where route_id=?;";
-    private static final String SELECT_ROLE_BY_EMAIL_PASS = "select users.role_id from users " +
-            "where users.user_email=? " +
-            "and users.user_password=?;";
-    private static final String SELECT_USER_ID_BY_EMAIL = "select users.user_id from users where users.user_email=?;";
     private static final String SELECT_SALT_BY_EMAIL = "select users.user_salt from users where users.user_email=?;";
     private static final String SELECT_EMAIL_PASS = "select users.user_email, users.user_password from users;";
     private static final String SELECT_EMAIL_FROM_USERS = "select users.user_email from users;";
@@ -277,46 +276,28 @@ public class DBManager implements ConnectionDB {
     }
 
     /**
-     * Returns user`s id by email
-     *
-     * @return User`s id
-     */
-    public int findIdByEmail(Connection connection, String email) throws SQLException {
-
-        int id = 0;
-        ResultSet rs = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_ID_BY_EMAIL)) {
-            preparedStatement.setString(1, email);
-            rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                id = Integer.parseInt(rs.getString(Fields.USER_ID));
-            }
-
-        } catch (SQLException e) {
-            logger.info(e.getMessage());
-        } finally {
-            assert rs != null;
-            rs.close();
-        }
-        return id;
-    }
-
-    /**
      * Returns user`s role by email and password
      *
      * @return User`s role
      */
-    public int findRoleByEmail(Connection connection, String email, String password) throws SQLException {
+    public Users findAllFromUsers(Connection connection, String email, String password) throws SQLException {
 
-        int role = 0;
+        UserBuilder userBuilder = new UserBuilder();
         ResultSet rs = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_EMAIL_PASS)) {
+        int id = 0;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FROM_USERS_BY_EMAIL)) {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
 
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                role = rs.getInt(Fields.ROLE_ID);
+                id = rs.getInt(Fields.USER_ID);
+                String salt = rs.getString(Fields.USER_SALT);
+                String firstName = rs.getString(Fields.FIRST_NAME);
+                String lastName = rs.getString(Fields.LAST_NAME);
+                String birthDate = rs.getString(Fields.BIRTH_DATE);
+                int role = rs.getInt(Fields.ROLE_ID);
+                userBuilder.setUsersCommonInfo(new UsersCommonInfo(salt,firstName,lastName,birthDate,role));
             }
 
         } catch (SQLException e) {
@@ -325,7 +306,9 @@ public class DBManager implements ConnectionDB {
             assert rs != null;
             rs.close();
         }
-        return role;
+        Users users = userBuilder.getResult();
+        users.setId(id);
+        return users;
     }
 
     /**

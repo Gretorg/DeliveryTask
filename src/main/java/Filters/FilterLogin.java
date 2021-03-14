@@ -51,6 +51,7 @@ public class FilterLogin implements Filter {
 
 
         if(checkUser(email,concat)){
+            req.setAttribute("salt",salt);
             chain.doFilter(req, resp);
         }
         else{

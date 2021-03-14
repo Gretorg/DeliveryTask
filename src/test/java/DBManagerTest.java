@@ -42,24 +42,6 @@ public class DBManagerTest implements ConnectionDB {
     }
 
     @Test
-    public void findIdByEmailTest() throws SQLException {
-
-        Connection connection = getConnection();
-        int expected = 1;
-        int actual = dbManager.findIdByEmail(connection, "admin@gmail.com");
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void findRoleByEmailTest() throws SQLException {
-
-        Connection connection = getConnection();
-        int expected = 1;
-        int actual = dbManager.findRoleByEmail(connection, "admin@gmail.com","B4BB0CED096BCBE452156EB8D26BDDA7C0DDE0A7F76F79C9D0456133C623CBBF");
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
     public void findDistanceByIdTest() throws SQLException {
 
         Connection connection = getConnection();

@@ -40,37 +40,20 @@ public class ServletLogin extends HttpServlet {
         Connection connection = dbManager.getConnection();
         String email = request.getParameter(Fields.USER_EMAIL);
         String password = request.getParameter(Fields.USER_PASSWORD);
-        String salt = null;
-        int role = 0;
-        int id = 0;
-
-        //find all by email
-        try {
-            id = dbManager.findIdByEmail(connection, email);
-            logger.info("Find id by email");
-        } catch (SQLException e) {
-            logger.debug(e.getMessage());
-        }
-
-        try {
-            salt = dbManager.findSaltByEmail(connection, email);
-            logger.info("Find salt by email");
-        } catch (SQLException e) {
-            logger.debug(e.getMessage());
-        }
+        String salt = (String) request.getAttribute("salt");
         String concat = password + salt;
-
+        Users users = null;
         try {
-            role = dbManager.findRoleByEmail(connection, email,hash(concat));
-            logger.info("Find role by email");
+            users = dbManager.findAllFromUsers(connection,email,hash(concat));
         } catch (SQLException | NoSuchAlgorithmException throwable) {
             throwable.printStackTrace();
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("role",role);
+        assert users != null;
+        session.setAttribute("role",users.getUsersCommonInfo().getRoleId());
         session.setAttribute("email",email);
-        session.setAttribute("id",id);
+        session.setAttribute("id",users.getId());
         getServletContext().getRequestDispatcher("/home").forward(request, response);
 
     }
@@ -88,32 +71,6 @@ public class ServletLogin extends HttpServlet {
             result.append(Integer.toString((aByteData & 0xff) + 0x100, 16).substring(1).toUpperCase());
         }
         return result.toString();
-    }
-
-    public static boolean checkUser(String email, String concat){
-
-        Connection connection = dbManager.getConnection();
-        UserBuilder userBuilder = new UserBuilder();
-        try {
-            userBuilder.setUsersSecretInfo(new UsersSecretInfo(email,hash(concat)));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        Users newUser = userBuilder.getResult();
-        boolean check = false;
-        try {
-
-            List<Users> users = dbManager.findUsersInfo(connection);
-            for (Users user : users) {
-                if (user.getUsersSecretInfo().equals(newUser.getUsersSecretInfo())) {
-                    check = true;
-                    break;
-                }
-            }
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-        return check;
     }
 
 }
